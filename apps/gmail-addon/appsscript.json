@@ -1,0 +1,26 @@
+{
+  "timeZone": "Asia/Jerusalem",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "addOns": {
+    "common": {
+      "name": "Malicious Email Scorer",
+      "logoUrl": "https://www.gstatic.com/images/icons/material/system/1x/security_black_24dp.png",
+      "layoutProperties": {
+        "primaryColor": "#d32f2f"
+      }
+    },
+    "gmail": {
+      "contextualTriggers": [
+        {
+          "unconditional": {},
+          "onTriggerFunction": "onGmailMessageOpen"
+        }
+      ]
+    }
+  },
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
+    "https://www.googleapis.com/auth/gmail.addons.execute"
+  ]
+}

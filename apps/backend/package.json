@@ -1,0 +1,18 @@
+{
+  "name": "malicious-email-scorer-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend API for the Upwind malicious email scorer Gmail Add-on",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
