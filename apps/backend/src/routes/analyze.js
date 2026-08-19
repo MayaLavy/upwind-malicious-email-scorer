@@ -1,5 +1,5 @@
 const express = require("express");
-const { analyzeEmail } = require("../services/mockAnalyzer");
+const { analyzeEmail } = require("../services/analyzer");
 
 const router = express.Router();
 
@@ -28,6 +28,18 @@ function validatePayload(body) {
     return "Field 'urls' must be an array of strings";
   }
 
+  if (body.replyTo !== undefined && typeof body.replyTo !== "string") {
+    return "Field 'replyTo' must be a string";
+  }
+
+  if (body.authenticationResults !== undefined && typeof body.authenticationResults !== "string") {
+    return "Field 'authenticationResults' must be a string";
+  }
+
+  if (body.bodyHtml !== undefined && typeof body.bodyHtml !== "string") {
+    return "Field 'bodyHtml' must be a string";
+  }
+
   return null;
 }
 
@@ -38,7 +50,17 @@ router.post("/", (req, res) => {
     return res.status(400).json({ error: validationError });
   }
 
-  const result = analyzeEmail();
+  const emailData = {
+    subject: req.body.subject,
+    from: req.body.from,
+    bodyText: req.body.bodyText,
+    urls: req.body.urls,
+    replyTo: req.body.replyTo || "",
+    authenticationResults: req.body.authenticationResults || "",
+    bodyHtml: req.body.bodyHtml || "",
+  };
+
+  const result = analyzeEmail(emailData);
 
   return res.json(result);
 });
