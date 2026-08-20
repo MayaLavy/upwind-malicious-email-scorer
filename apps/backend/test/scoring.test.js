@@ -182,6 +182,21 @@ const tests = [
     expectedVerdict: "Low Risk",
     expectedBreakdown: { urlRisk: 5 },
   },
+  {
+    name: "Regression 5: Quoted Reply-To domain should not mismatch",
+    input: {
+      subject: "Weekly offers",
+      from: "newsletter@super-pharm.co.il",
+      bodyText: "Browse this week's offers.",
+      urls: [],
+      replyTo: "\"Super-Pharm\" <offers@super-pharm.co.il\">",
+      authenticationResults: "",
+      bodyHtml: "",
+    },
+    expectedScore: 0,
+    expectedVerdict: "Low Risk",
+    expectedBreakdown: { replyTo: 0 },
+  },
 ];
 
 let failed = false;

@@ -5,7 +5,7 @@
 function extractDomain(emailString) {
   if (!emailString || typeof emailString !== "string") return "";
   const match = emailString.match(/@([^\s>]+)/);
-  return match ? match[1].toLowerCase().trim() : "";
+  return match ? normalizeComparableDomain(match[1]) : "";
 }
 
 /**
@@ -17,6 +17,7 @@ function normalizeComparableDomain(domain) {
   return domain
     .toLowerCase()
     .trim()
+    .replace(/^["']+|["']+$/g, "")
     .replace(/[.,;:!?)\]\}]+$/g, "");
 }
 
