@@ -27,7 +27,7 @@ const tests = [
       bodyHtml: "",
     },
     expectedScore: 30,
-    expectedVerdict: "Suspicious",
+    expectedVerdict: "High Risk",
   },
   {
     name: "Test 3: Brand impersonation",
@@ -41,7 +41,7 @@ const tests = [
       bodyHtml: "",
     },
     expectedScore: 30,
-    expectedVerdict: "Suspicious",
+    expectedVerdict: "High Risk",
   },
   {
     name: "Test 4: URL risk",
@@ -55,7 +55,7 @@ const tests = [
       bodyHtml: '<a href="https://evil.com/steal">https://paypal.com/login</a>',
     },
     expectedScore: 25,
-    expectedVerdict: "Low Risk",
+    expectedVerdict: "Suspicious",
   },
   {
     name: "Test 5: Full phishing",
@@ -85,7 +85,7 @@ const tests = [
       bodyHtml: "",
     },
     expectedScore: 30,
-    expectedVerdict: "Suspicious",
+    expectedVerdict: "High Risk",
   },
   {
     name: "Test 7: Reply-To mismatch only",

@@ -7,7 +7,8 @@ const CATEGORY_CAP = 25;
  * Impersonation category (cap: 25).
  *
  * Display name claims known brand but domain doesn't match: +15
- * Lookalike/typosquatting domain:                           +25
+ * Lookalike/typosquatting sender domain: set category score to 25
+ *   (category maximum; overwrites prior additive display-name points)
  */
 function scoreImpersonation({ from }) {
   let score = 0;

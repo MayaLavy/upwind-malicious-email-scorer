@@ -6,9 +6,9 @@ const { scoreContent } = require("./categories/content");
 const { scoreCorroboration } = require("./categories/corroboration");
 
 const VERDICT_THRESHOLDS = [
-  { min: 80, label: "Likely Malicious" },
-  { min: 60, label: "High Risk" },
-  { min: 30, label: "Suspicious" },
+  { min: 60, label: "Likely Malicious" },
+  { min: 30, label: "High Risk" },
+  { min: 15, label: "Suspicious" },
   { min: 0, label: "Low Risk" },
 ];
 
