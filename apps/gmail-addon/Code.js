@@ -108,38 +108,61 @@ function callBackend(subject, sender, bodyText, urls, replyTo, authenticationRes
 }
 
 /**
+ * Forces English analysis text to render LTR inside an RTL Gmail host UI.
+ * CardService has no text-direction API, so we wrap with Unicode LTR embedding.
+ */
+function asLtr(text) {
+  if (text === null || text === undefined) {
+    return "";
+  }
+  return "\u202A" + String(text) + "\u202C";
+}
+
+/**
  * Builds a card displaying the analysis result.
+ * Uses one widget per reason so long findings wrap cleanly in the narrow sidebar.
  */
 function buildResultCard(result) {
   var header = CardService.newCardHeader()
     .setTitle("Analysis Result");
 
-  var scoreWidget = CardService.newKeyValue()
-    .setTopLabel("Score")
-    .setContent(result.score + " / 100");
-
-  var verdictWidget = CardService.newKeyValue()
-    .setTopLabel("Verdict")
-    .setContent(result.verdict);
-
-  var reasonsText = result.reasons
-    .map(function (r, i) { return (i + 1) + ". " + r; })
-    .join("\n");
-
-  var reasonsWidget = CardService.newTextParagraph()
-    .setText(reasonsText);
-
-  var section = CardService.newCardSection()
-    .addWidget(scoreWidget)
-    .addWidget(verdictWidget)
+  var summarySection = CardService.newCardSection()
     .addWidget(
-      CardService.newTextParagraph().setText("Reasons:")
+      CardService.newDecoratedText()
+        .setTopLabel(asLtr("Score"))
+        .setText(asLtr(result.score + " / 100"))
     )
-    .addWidget(reasonsWidget);
+    .addWidget(
+      CardService.newDecoratedText()
+        .setTopLabel(asLtr("Verdict"))
+        .setText(asLtr(result.verdict))
+        .setWrapText(true)
+    );
+
+  var reasonsSection = CardService.newCardSection()
+    .setHeader(asLtr("Reasons"));
+
+  var reasons = result.reasons || [];
+  if (reasons.length === 0) {
+    reasonsSection.addWidget(
+      CardService.newTextParagraph()
+        .setText(asLtr("No suspicious signals detected"))
+    );
+  } else {
+    for (var i = 0; i < reasons.length; i++) {
+      reasonsSection.addWidget(
+        CardService.newDecoratedText()
+          .setTopLabel(asLtr(String(i + 1)))
+          .setText(asLtr(reasons[i]))
+          .setWrapText(true)
+      );
+    }
+  }
 
   return CardService.newCardBuilder()
     .setHeader(header)
-    .addSection(section)
+    .addSection(summarySection)
+    .addSection(reasonsSection)
     .build();
 }
 
@@ -151,7 +174,7 @@ function buildErrorCard(errorMessage) {
     .setTitle("Analysis Error");
 
   var errorWidget = CardService.newTextParagraph()
-    .setText("Could not analyze this email:\n\n" + errorMessage);
+    .setText(asLtr("Could not analyze this email:\n\n" + errorMessage));
 
   var section = CardService.newCardSection()
     .addWidget(errorWidget);
