@@ -9,6 +9,18 @@ function extractDomain(emailString) {
 }
 
 /**
+ * Normalizes a domain for conservative equality comparisons.
+ * Used to avoid false mismatches from case, whitespace, or trailing punctuation.
+ */
+function normalizeComparableDomain(domain) {
+  if (!domain || typeof domain !== "string") return "";
+  return domain
+    .toLowerCase()
+    .trim()
+    .replace(/[.,;:!?)\]\}]+$/g, "");
+}
+
+/**
  * Extracts the display name from an email "From" field.
  * e.g. "PayPal Security <attacker@evil.com>" → "paypal security"
  */
@@ -66,9 +78,29 @@ function isLookalikeDomain(suspectDomain, legitimateDomain) {
   return false;
 }
 
+/**
+ * Treats an exact domain match or parent/subdomain relationship as the same family.
+ * Examples:
+ * - service.tiktok.com vs tiktok.com => true
+ * - company.com vs support.company.com => true
+ * - company.com vs gmail.com => false
+ * - paypal.com vs attacker-paypal.com => false
+ */
+function isSameDomainFamily(firstDomain, secondDomain) {
+  const first = normalizeComparableDomain(firstDomain);
+  const second = normalizeComparableDomain(secondDomain);
+
+  if (!first || !second) return false;
+  if (first === second) return true;
+
+  return first.endsWith("." + second) || second.endsWith("." + first);
+}
+
 module.exports = {
   extractDomain,
   extractDisplayName,
+  normalizeComparableDomain,
   normalizeDomain,
   isLookalikeDomain,
+  isSameDomainFamily,
 };

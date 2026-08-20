@@ -1,12 +1,13 @@
-const { extractDomain } = require("../utils/domainHelpers");
+const { extractDomain, isSameDomainFamily } = require("../utils/domainHelpers");
 
 const MAX_SCORE = 5;
 
 /**
  * Reply-To anomaly (max: 5).
  *
- * From domain and Reply-To domain differ: +5
- * No Reply-To, or same domain:            +0
+ * From domain and Reply-To domain differ:   +5
+ * Same domain family (parent/subdomain):    +0
+ * No Reply-To, or same domain:              +0
  */
 function scoreReplyTo({ from, replyTo }) {
   if (!replyTo || typeof replyTo !== "string" || replyTo.trim() === "") {
@@ -20,7 +21,7 @@ function scoreReplyTo({ from, replyTo }) {
     return { score: 0, findings: [] };
   }
 
-  if (fromDomain !== replyToDomain) {
+  if (!isSameDomainFamily(fromDomain, replyToDomain)) {
     return {
       score: MAX_SCORE,
       findings: [

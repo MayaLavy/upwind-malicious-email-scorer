@@ -1,3 +1,5 @@
+const { normalizeComparableDomain } = require("./domainHelpers");
+
 /**
  * Minimal HTML <a> tag parser for detecting displayed-link vs href mismatches.
  *
@@ -19,7 +21,7 @@ function domainFromUrl(url) {
   if (!url) return "";
   try {
     const match = url.match(/^https?:\/\/([^/?#]+)/i);
-    return match ? match[1].toLowerCase() : "";
+    return match ? normalizeComparableDomain(match[1]) : "";
   } catch {
     return "";
   }
