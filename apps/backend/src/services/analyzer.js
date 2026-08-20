@@ -68,4 +68,4 @@ function analyzeEmail(emailData) {
   };
 }
 
-module.exports = { analyzeEmail };
+module.exports = { analyzeEmail, getVerdict };
