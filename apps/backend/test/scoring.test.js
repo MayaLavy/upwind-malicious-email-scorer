@@ -197,6 +197,22 @@ const tests = [
     expectedVerdict: "Low Risk",
     expectedBreakdown: { replyTo: 0 },
   },
+  {
+    name: "Regression 6: Same-family displayed link and href should not mismatch",
+    input: {
+      subject: "Order update",
+      from: "orders@aldoshoes.com",
+      bodyText: "Track your order.",
+      urls: [],
+      replyTo: "",
+      authenticationResults: "",
+      bodyHtml:
+        '<a href="https://trk.send.aldoshoes.com/click/123">aldoshoes.com</a>',
+    },
+    expectedScore: 0,
+    expectedVerdict: "Low Risk",
+    expectedBreakdown: { urlRisk: 0 },
+  },
 ];
 
 let failed = false;

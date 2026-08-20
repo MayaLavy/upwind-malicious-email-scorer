@@ -1,4 +1,7 @@
-const { normalizeComparableDomain } = require("./domainHelpers");
+const {
+  normalizeComparableDomain,
+  isSameDomainFamily,
+} = require("./domainHelpers");
 
 /**
  * Minimal HTML <a> tag parser for detecting displayed-link vs href mismatches.
@@ -81,7 +84,7 @@ function findMismatchedLinks(html) {
     (link) =>
       link.displayedDomain &&
       link.hrefDomain &&
-      link.displayedDomain !== link.hrefDomain
+      !isSameDomainFamily(link.displayedDomain, link.hrefDomain)
   );
 }
 
