@@ -31,6 +31,9 @@ function domainFromUrl(url) {
  * Checks if text looks like a URL or domain.
  */
 function looksLikeUrl(text) {
+  if (/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(text.trim())) {
+    return false;
+  }
   return /^https?:\/\//i.test(text) || /^www\./i.test(text) || /\.[a-z]{2,}$/i.test(text);
 }
 

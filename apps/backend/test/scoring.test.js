@@ -147,6 +147,41 @@ const tests = [
     expectedVerdict: "Low Risk",
     expectedBreakdown: { replyTo: 5 },
   },
+  {
+    name: "Regression 4: Displayed email address should not trigger link mismatch",
+    input: {
+      subject: "Weekly offers",
+      from: "newsletter@superpharm.co.il",
+      bodyText: "Browse this week's offers.",
+      urls: [
+        "https://links.email.superpharm.co.il/1",
+        "https://links.email.superpharm.co.il/2",
+        "https://links.email.superpharm.co.il/3",
+        "https://links.email.superpharm.co.il/4",
+        "https://links.email.superpharm.co.il/5",
+        "https://links.email.superpharm.co.il/6",
+        "https://links.email.superpharm.co.il/7",
+        "https://links.email.superpharm.co.il/8",
+        "https://links.email.superpharm.co.il/9",
+        "https://links.email.superpharm.co.il/10",
+        "https://links.email.superpharm.co.il/11",
+        "https://links.email.superpharm.co.il/12",
+        "https://links.email.superpharm.co.il/13",
+        "https://links.email.superpharm.co.il/14",
+        "https://links.email.superpharm.co.il/15",
+        "https://links.email.superpharm.co.il/16",
+        "https://links.email.superpharm.co.il/17",
+        "https://links.email.superpharm.co.il/18",
+      ],
+      replyTo: "",
+      authenticationResults: "",
+      bodyHtml:
+        '<a href="https://links.email.superpharm.co.il/click?id=123">NLcustomers@SuperPharm.co.il</a>',
+    },
+    expectedScore: 5,
+    expectedVerdict: "Low Risk",
+    expectedBreakdown: { urlRisk: 5 },
+  },
 ];
 
 let failed = false;
